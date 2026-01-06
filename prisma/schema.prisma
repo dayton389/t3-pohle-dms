@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model GolfCart {
+  id        String @id @default(cuid())
+  make      String
+  model     String
+  year      Int
+  basePrice Float
+
+  installedParts InstalledPart[]
+}
+
+model Part {
+  id       String @id @default(cuid())
+  sku      String @unique
+  name     String
+  category String
+  price    Float
+
+  installations InstalledPart[]
+}
+
+model InstalledPart {
+  id           String   @id @default(cuid())
+  installedAt  DateTime @default(now())
+  quantity     Int      @default(1)
+  chargedPrice Float
+
+  cartId String
+  cart   GolfCart @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+  partId String
+  part   Part @relation(fields: [partId], references: [id])
+}

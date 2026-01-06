@@ -1,0 +1,19 @@
+{
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "prisma/schema.prisma",
+        "cmd": "npx prisma db push"
+      }
+    ]
+  },
+  "prisma.pinToPrisma6": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
+}
