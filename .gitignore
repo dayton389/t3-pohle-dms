@@ -21,6 +21,16 @@ next-env.d.ts
 # production
 /build
 
+# generated files
+/dist
+/generated
+/public/generated
+/prisma/generated
+/.turbo
+/.cache
+/.parcel-cache
+.eslintcache
+
 # misc
 .DS_Store
 *.pem

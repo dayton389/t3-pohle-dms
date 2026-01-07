@@ -138,7 +138,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\dayto\\t3-gc-dms\\generated\\prisma",
+      "value": "c:\\xampp\\htdoc\\t3-pohle-dms\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -152,7 +152,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\dayto\\t3-gc-dms\\prisma\\schema.prisma",
+    "sourceFilePath": "c:\\xampp\\htdoc\\t3-pohle-dms\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
