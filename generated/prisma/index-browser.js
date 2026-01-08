@@ -118,29 +118,76 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.GolfCartScalarFieldEnum = {
+exports.Prisma.InventoryScalarFieldEnum = {
   id: 'id',
-  make: 'make',
-  model: 'model',
+  stockNumber: 'stockNumber',
+  serialNumber: 'serialNumber',
   year: 'year',
-  basePrice: 'basePrice'
+  brand: 'brand',
+  model: 'model',
+  carType: 'carType',
+  fuel: 'fuel',
+  color: 'color',
+  price: 'price',
+  mileage: 'mileage',
+  azStreetLegal: 'azStreetLegal',
+  status: 'status',
+  location: 'location',
+  commentsPublic: 'commentsPublic',
+  commentsInternal: 'commentsInternal',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.PartScalarFieldEnum = {
+exports.Prisma.InventoryImageScalarFieldEnum = {
   id: 'id',
-  sku: 'sku',
-  name: 'name',
+  inventoryId: 'inventoryId',
+  url: 'url',
+  sortOrder: 'sortOrder',
+  isPrimary: 'isPrimary'
+};
+
+exports.Prisma.CustomerScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  city: 'city',
+  state: 'state',
+  zip: 'zip',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SaleScalarFieldEnum = {
+  id: 'id',
+  inventoryId: 'inventoryId',
+  customerId: 'customerId',
+  salePrice: 'salePrice',
+  discount: 'discount',
+  tradein: 'tradein',
+  dateSold: 'dateSold',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AccessoryScalarFieldEnum = {
+  id: 'id',
+  partNumber: 'partNumber',
+  description: 'description',
+  cost: 'cost',
+  retailPrice: 'retailPrice',
   category: 'category',
-  price: 'price'
-};
-
-exports.Prisma.InstalledPartScalarFieldEnum = {
-  id: 'id',
-  installedAt: 'installedAt',
-  quantity: 'quantity',
-  chargedPrice: 'chargedPrice',
-  cartId: 'cartId',
-  partId: 'partId'
+  forNewCarts: 'forNewCarts',
+  forUsedCarts: 'forUsedCarts',
+  isFeatured: 'isFeatured',
+  showOnWebsite: 'showOnWebsite',
+  imageUrl: 'imageUrl',
+  commentsInternal: 'commentsInternal',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -148,11 +195,44 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.FuelType = exports.$Enums.FuelType = {
+  ELECTRIC: 'ELECTRIC',
+  GAS: 'GAS',
+  LITHIUM: 'LITHIUM'
+};
+
+exports.InventoryStatus = exports.$Enums.InventoryStatus = {
+  AVAILABLE: 'AVAILABLE',
+  PENDING: 'PENDING',
+  SOLD: 'SOLD',
+  ON_ORDER: 'ON_ORDER',
+  SERVICE: 'SERVICE'
+};
+
+exports.AccessoryCategory = exports.$Enums.AccessoryCategory = {
+  WHEELS_TIRES: 'WHEELS_TIRES',
+  SEATS: 'SEATS',
+  LIGHTING: 'LIGHTING',
+  AUDIO: 'AUDIO',
+  ENCLOSURES: 'ENCLOSURES',
+  LIFT_KITS: 'LIFT_KITS',
+  MIRRORS: 'MIRRORS',
+  STORAGE: 'STORAGE',
+  CHARGERS: 'CHARGERS',
+  BATTERIES: 'BATTERIES',
+  MISC: 'MISC'
+};
 
 exports.Prisma.ModelName = {
-  GolfCart: 'GolfCart',
-  Part: 'Part',
-  InstalledPart: 'InstalledPart'
+  Inventory: 'Inventory',
+  InventoryImage: 'InventoryImage',
+  Customer: 'Customer',
+  Sale: 'Sale',
+  Accessory: 'Accessory'
 };
 
 /**

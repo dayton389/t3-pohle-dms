@@ -1,3 +1,4 @@
+// schema.prisma
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -8,35 +9,147 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model GolfCart {
-  id        String @id @default(cuid())
-  make      String
-  model     String
-  year      Int
-  basePrice Float
+// ============================================
+// INVENTORY
+// ============================================
+model Inventory {
+  id           String  @id @default(cuid())
+  stockNumber  String  @unique
+  serialNumber String? @unique
 
-  installedParts InstalledPart[]
+  year    Int?
+  brand   String
+  model   String
+  carType String?
+  fuel    FuelType
+  color   String?
+
+  price         Float
+  mileage       String?
+  azStreetLegal Boolean @default(false)
+
+  status   InventoryStatus @default(AVAILABLE)
+  location String?
+
+  commentsPublic   String?
+  commentsInternal String?
+
+  images InventoryImage[]
+  sale   Sale?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([brand])
 }
 
-model Part {
-  id       String @id @default(cuid())
-  sku      String @unique
-  name     String
-  category String
-  price    Float
-
-  installations InstalledPart[]
+enum FuelType {
+  ELECTRIC
+  GAS
+  LITHIUM
 }
 
-model InstalledPart {
-  id           String   @id @default(cuid())
-  installedAt  DateTime @default(now())
-  quantity     Int      @default(1)
-  chargedPrice Float
+model InventoryImage {
+  id          String    @id @default(cuid())
+  inventoryId String
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  url         String
+  sortOrder   Int       @default(0)
+  isPrimary   Boolean   @default(false)
 
-  cartId String
-  cart   GolfCart @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  @@index([inventoryId])
+}
 
-  partId String
-  part   Part   @relation(fields: [partId], references: [id])
+enum InventoryStatus {
+  AVAILABLE
+  PENDING
+  SOLD
+  ON_ORDER
+  SERVICE
+}
+
+// ============================================
+// CUSTOMERS
+// ============================================
+model Customer {
+  id        String  @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String?
+  phone     String?
+  address   String?
+  city      String?
+  state     String?
+  zip       String?
+
+  sales Sale[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([lastName])
+}
+
+// ============================================
+// SALES
+// ============================================
+model Sale {
+  id          String    @id @default(cuid())
+  inventoryId String    @unique
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  customerId  String
+  customer    Customer  @relation(fields: [customerId], references: [id])
+
+  salePrice Float
+  discount  Float?
+  tradein   Float?
+
+  dateSold  DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([dateSold])
+}
+
+// ============================================
+// ACCESSORIES
+// ============================================
+model Accessory {
+  id          String  @id @default(cuid())
+  partNumber  String? @unique
+  description String
+
+  cost        Float?
+  retailPrice Float
+
+  category AccessoryCategory?
+
+  forNewCarts  Boolean @default(true)
+  forUsedCarts Boolean @default(true)
+  isFeatured   Boolean @default(false)
+
+  showOnWebsite Boolean @default(true)
+  imageUrl      String?
+
+  commentsInternal String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+}
+
+enum AccessoryCategory {
+  WHEELS_TIRES
+  SEATS
+  LIGHTING
+  AUDIO
+  ENCLOSURES
+  LIFT_KITS
+  MIRRORS
+  STORAGE
+  CHARGERS
+  BATTERIES
+  MISC
 }

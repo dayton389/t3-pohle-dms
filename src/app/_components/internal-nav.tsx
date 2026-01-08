@@ -13,6 +13,9 @@ export function InternalNav() {
       <Link href="/documents" className="hover:underline">
         Documents
       </Link>
+      <Link href="/inventory" className="hover:underline">
+        Inventory
+      </Link>
     </nav>
   );
 }

@@ -1,6 +1,6 @@
 // src/app/layout.tsx
 import { TRPCReactProvider } from "~/trpc/react";
-
+import "../app/globals.css";
 export default function RootLayout({
   children,
 }: {

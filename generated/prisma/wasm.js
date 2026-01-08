@@ -90,29 +90,76 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.GolfCartScalarFieldEnum = {
+exports.Prisma.InventoryScalarFieldEnum = {
   id: 'id',
-  make: 'make',
-  model: 'model',
+  stockNumber: 'stockNumber',
+  serialNumber: 'serialNumber',
   year: 'year',
-  basePrice: 'basePrice'
+  brand: 'brand',
+  model: 'model',
+  carType: 'carType',
+  fuel: 'fuel',
+  color: 'color',
+  price: 'price',
+  mileage: 'mileage',
+  azStreetLegal: 'azStreetLegal',
+  status: 'status',
+  location: 'location',
+  commentsPublic: 'commentsPublic',
+  commentsInternal: 'commentsInternal',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.PartScalarFieldEnum = {
+exports.Prisma.InventoryImageScalarFieldEnum = {
   id: 'id',
-  sku: 'sku',
-  name: 'name',
+  inventoryId: 'inventoryId',
+  url: 'url',
+  sortOrder: 'sortOrder',
+  isPrimary: 'isPrimary'
+};
+
+exports.Prisma.CustomerScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  city: 'city',
+  state: 'state',
+  zip: 'zip',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SaleScalarFieldEnum = {
+  id: 'id',
+  inventoryId: 'inventoryId',
+  customerId: 'customerId',
+  salePrice: 'salePrice',
+  discount: 'discount',
+  tradein: 'tradein',
+  dateSold: 'dateSold',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AccessoryScalarFieldEnum = {
+  id: 'id',
+  partNumber: 'partNumber',
+  description: 'description',
+  cost: 'cost',
+  retailPrice: 'retailPrice',
   category: 'category',
-  price: 'price'
-};
-
-exports.Prisma.InstalledPartScalarFieldEnum = {
-  id: 'id',
-  installedAt: 'installedAt',
-  quantity: 'quantity',
-  chargedPrice: 'chargedPrice',
-  cartId: 'cartId',
-  partId: 'partId'
+  forNewCarts: 'forNewCarts',
+  forUsedCarts: 'forUsedCarts',
+  isFeatured: 'isFeatured',
+  showOnWebsite: 'showOnWebsite',
+  imageUrl: 'imageUrl',
+  commentsInternal: 'commentsInternal',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -120,11 +167,44 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.FuelType = exports.$Enums.FuelType = {
+  ELECTRIC: 'ELECTRIC',
+  GAS: 'GAS',
+  LITHIUM: 'LITHIUM'
+};
+
+exports.InventoryStatus = exports.$Enums.InventoryStatus = {
+  AVAILABLE: 'AVAILABLE',
+  PENDING: 'PENDING',
+  SOLD: 'SOLD',
+  ON_ORDER: 'ON_ORDER',
+  SERVICE: 'SERVICE'
+};
+
+exports.AccessoryCategory = exports.$Enums.AccessoryCategory = {
+  WHEELS_TIRES: 'WHEELS_TIRES',
+  SEATS: 'SEATS',
+  LIGHTING: 'LIGHTING',
+  AUDIO: 'AUDIO',
+  ENCLOSURES: 'ENCLOSURES',
+  LIFT_KITS: 'LIFT_KITS',
+  MIRRORS: 'MIRRORS',
+  STORAGE: 'STORAGE',
+  CHARGERS: 'CHARGERS',
+  BATTERIES: 'BATTERIES',
+  MISC: 'MISC'
+};
 
 exports.Prisma.ModelName = {
-  GolfCart: 'GolfCart',
-  Part: 'Part',
-  InstalledPart: 'InstalledPart'
+  Inventory: 'Inventory',
+  InventoryImage: 'InventoryImage',
+  Customer: 'Customer',
+  Sale: 'Sale',
+  Accessory: 'Accessory'
 };
 /**
  * Create the Client
@@ -137,7 +217,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "c:\\xampp\\htdoc\\t3-pohle-dms\\generated\\prisma",
+      "value": "C:\\xampp\\htdoc\\t3-pohle-dms\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -151,7 +231,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "c:\\xampp\\htdoc\\t3-pohle-dms\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\xampp\\htdoc\\t3-pohle-dms\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -165,7 +245,6 @@ const config = {
     "db"
   ],
   "activeProvider": "sqlite",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -174,13 +253,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel GolfCart {\n  id        String @id @default(cuid())\n  make      String\n  model     String\n  year      Int\n  basePrice Float\n\n  installedParts InstalledPart[]\n}\n\nmodel Part {\n  id       String @id @default(cuid())\n  sku      String @unique\n  name     String\n  category String\n  price    Float\n\n  installations InstalledPart[]\n}\n\nmodel InstalledPart {\n  id           String   @id @default(cuid())\n  installedAt  DateTime @default(now())\n  quantity     Int      @default(1)\n  chargedPrice Float\n\n  cartId String\n  cart   GolfCart @relation(fields: [cartId], references: [id], onDelete: Cascade)\n\n  partId String\n  part   Part   @relation(fields: [partId], references: [id])\n}\n",
-  "inlineSchemaHash": "a843155395a62587bc8807ec5c943f760716adb012467e4d453491dae9925142",
+  "inlineSchema": "// schema.prisma\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// ============================================\n// INVENTORY\n// ============================================\nmodel Inventory {\n  id           String  @id @default(cuid())\n  stockNumber  String  @unique\n  serialNumber String? @unique\n\n  year    Int?\n  brand   String\n  model   String\n  carType String?\n  fuel    FuelType\n  color   String?\n\n  price         Float\n  mileage       String?\n  azStreetLegal Boolean @default(false)\n\n  status   InventoryStatus @default(AVAILABLE)\n  location String?\n\n  commentsPublic   String?\n  commentsInternal String?\n\n  images InventoryImage[]\n  sale   Sale?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([status])\n  @@index([brand])\n}\n\nenum FuelType {\n  ELECTRIC\n  GAS\n  LITHIUM\n}\n\nmodel InventoryImage {\n  id          String    @id @default(cuid())\n  inventoryId String\n  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)\n  url         String\n  sortOrder   Int       @default(0)\n  isPrimary   Boolean   @default(false)\n\n  @@index([inventoryId])\n}\n\nenum InventoryStatus {\n  AVAILABLE\n  PENDING\n  SOLD\n  ON_ORDER\n  SERVICE\n}\n\n// ============================================\n// CUSTOMERS\n// ============================================\nmodel Customer {\n  id        String  @id @default(cuid())\n  firstName String\n  lastName  String\n  email     String?\n  phone     String?\n  address   String?\n  city      String?\n  state     String?\n  zip       String?\n\n  sales Sale[]\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([lastName])\n}\n\n// ============================================\n// SALES\n// ============================================\nmodel Sale {\n  id          String    @id @default(cuid())\n  inventoryId String    @unique\n  inventory   Inventory @relation(fields: [inventoryId], references: [id])\n  customerId  String\n  customer    Customer  @relation(fields: [customerId], references: [id])\n\n  salePrice Float\n  discount  Float?\n  tradein   Float?\n\n  dateSold  DateTime @default(now())\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([dateSold])\n}\n\n// ============================================\n// ACCESSORIES\n// ============================================\nmodel Accessory {\n  id          String  @id @default(cuid())\n  partNumber  String? @unique\n  description String\n\n  cost        Float?\n  retailPrice Float\n\n  category AccessoryCategory?\n\n  forNewCarts  Boolean @default(true)\n  forUsedCarts Boolean @default(true)\n  isFeatured   Boolean @default(false)\n\n  showOnWebsite Boolean @default(true)\n  imageUrl      String?\n\n  commentsInternal String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([category])\n}\n\nenum AccessoryCategory {\n  WHEELS_TIRES\n  SEATS\n  LIGHTING\n  AUDIO\n  ENCLOSURES\n  LIFT_KITS\n  MIRRORS\n  STORAGE\n  CHARGERS\n  BATTERIES\n  MISC\n}\n",
+  "inlineSchemaHash": "e7693c181a86528779fb4e27d00af8d14238e150b3f66bc6e86e21d8a96434a1",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"GolfCart\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"make\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"model\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"year\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"basePrice\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"installedParts\",\"kind\":\"object\",\"type\":\"InstalledPart\",\"relationName\":\"GolfCartToInstalledPart\"}],\"dbName\":null},\"Part\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sku\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"installations\",\"kind\":\"object\",\"type\":\"InstalledPart\",\"relationName\":\"InstalledPartToPart\"}],\"dbName\":null},\"InstalledPart\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"installedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"chargedPrice\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"cartId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cart\",\"kind\":\"object\",\"type\":\"GolfCart\",\"relationName\":\"GolfCartToInstalledPart\"},{\"name\":\"partId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"part\",\"kind\":\"object\",\"type\":\"Part\",\"relationName\":\"InstalledPartToPart\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Inventory\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stockNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"serialNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"year\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"brand\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"model\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"carType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"fuel\",\"kind\":\"enum\",\"type\":\"FuelType\"},{\"name\":\"color\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"mileage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"azStreetLegal\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"InventoryStatus\"},{\"name\":\"location\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"commentsPublic\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"commentsInternal\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"images\",\"kind\":\"object\",\"type\":\"InventoryImage\",\"relationName\":\"InventoryToInventoryImage\"},{\"name\":\"sale\",\"kind\":\"object\",\"type\":\"Sale\",\"relationName\":\"InventoryToSale\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"InventoryImage\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"inventoryId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"inventory\",\"kind\":\"object\",\"type\":\"Inventory\",\"relationName\":\"InventoryToInventoryImage\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sortOrder\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isPrimary\",\"kind\":\"scalar\",\"type\":\"Boolean\"}],\"dbName\":null},\"Customer\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"firstName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"city\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"state\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"zip\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sales\",\"kind\":\"object\",\"type\":\"Sale\",\"relationName\":\"CustomerToSale\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Sale\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"inventoryId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"inventory\",\"kind\":\"object\",\"type\":\"Inventory\",\"relationName\":\"InventoryToSale\"},{\"name\":\"customerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customer\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToSale\"},{\"name\":\"salePrice\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"discount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"tradein\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"dateSold\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Accessory\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"partNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cost\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"retailPrice\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"category\",\"kind\":\"enum\",\"type\":\"AccessoryCategory\"},{\"name\":\"forNewCarts\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"forUsedCarts\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"isFeatured\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"showOnWebsite\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"commentsInternal\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),
